@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPC领导力测评</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+        .container{max-width:700px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden}
+        .header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:40px 30px;text-align:center}
+        .header h1{font-size:28px;margin-bottom:10px}
+        .header p{opacity:0.9;font-size:16px}
+        .content{padding:30px}
+        .welcome{text-align:center;margin-bottom:30px}
+        .welcome h2{color:#333;margin-bottom:15px}
+        .welcome p{color:#666;line-height:1.6}
+        .input-group{margin:25px 0}
+        .input-group label{display:block;margin-bottom:8px;color:#333;font-weight:500}
+        .input-group input{width:100%;padding:14px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:16px;transition:border-color 0.3s}
+        .input-group input:focus{outline:none;border-color:#667eea}
+        .btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;padding:16px 40px;font-size:18px;border-radius:10px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:block;margin:30px auto 0}
+        .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(102,126,234,0.4)}
+        .progress-bar{height:6px;background:#e0e0e0;border-radius:3px;margin-bottom:25px;overflow:hidden}
+        .progress-fill{height:100%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);width:0%;transition:width 0.3s}
+        .question{font-size:20px;color:#333;margin-bottom:25px;line-height:1.5}
+        .options{display:flex;flex-direction:column;gap:12px}
+        .option{background:#f8f9fa;border:2px solid #e0e0e0;padding:16px 20px;border-radius:10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center}
+        .option:hover{border-color:#667eea;background:#f0f3ff}
+        .option.selected{border-color:#667eea;background:#667eea;color:#fff}
+        .option-letter{width:32px;height:32px;background:#667eea;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:15px;flex-shrink:0}
+        .option.selected .option-letter{background:#fff;color:#667eea}
+        .result{text-align:center;padding:20px 0}
+        .result h2{color:#333;margin-bottom:20px}
+        .archetype-card{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:30px;border-radius:16px;margin:20px 0}
+        .archetype-card h3{font-size:24px;margin-bottom:10px}
+        .archetype-card p{opacity:0.9;line-height:1.6}
+        .chart-container{margin:30px auto;max-width:500px}
+        .analysis-section{text-align:left;margin:30px 0;padding:20px;background:#f8f9fa;border-radius:12px}
+        .analysis-section h4{color:#667eea;margin-bottom:15px;font-size:18px}
+        .analysis-section ul{margin-left:20px;color:#555;line-height:1.8}
+        .analysis-section li{margin-bottom:8px}
+        .cta-section{margin-top:30px;padding:25px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border-radius:12px}
+        .cta-section p{font-size:18px;line-height:1.6}
+        .hidden{display:none}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OPC领导力测评</h1>
+            <p>解锁12原型能量，发现你的OPC领导力密码</p>
+        </div>
+        
+        <div class="content">
+            <!-- 欢迎页 -->
+            <div id="welcomePage">
+                <div class="welcome">
+                    <h2>欢迎开启你的OPC领导力探索之旅</h2>
+                    <p>OPC（One Person Company）时代，每个人都是自己的CEO。本测评基于荣格12原型理论，帮助你发现内在领导力原型，激活你的OPC潜能。</p>
+                    <p style="margin-top:15px;color:#999">共24题 · 约5分钟</p>
+                </div>
+                <div class="input-group">
+                    <label>请输入你的名字</label>
+                    <input type="text" id="userName" placeholder="你的名字">
+                </div>
+                <button class="btn" onclick="startQuiz()">开始测评</button>
+            </div>
+            
+            <!-- 测评页 -->
+            <div id="quizPage" class="hidden">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="question" id="questionText"></div>
+                <div class="options" id="optionsBox"></div>
+            </div>
+            
+            <!-- 结果页 -->
+            <div id="resultPage" class="hidden">
+                <div class="result">
+                    <h2>测评完成！</h2>
+                    <div class="archetype-card">
+                        <h3 id="resultName"></h3>
+                        <p id="resultDesc"></p>
+                    </div>
+                    
+                    <!-- 雷达图 -->
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    
+                    <!-- OPC解读 -->
+                    <div class="analysis-section">
+                        <h4>OPC领域优势</h4>
+                        <ul id="strengthList"></ul>
+                    </div>
+                    
+                    <div class="analysis-section">
+                        <h4>有待提升与发展</h4>
+                        <ul id="growthList"></ul>
+                    </div>
+                    
+                    <!-- CTA -->
+                    <div class="cta-section">
+                        <p>欢迎参加晶智方略的人生转型加速器，在OPC道路上加速前行！</p>
+                    </div>
+                    
+                    <button class="btn" onclick="location.reload()">重新测评</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据
+        var questions = [
+            {q:"当你决定创业或开启新项目时，你最关注什么？",a:["是否符合内心价值观","能否解决真实问题","能否快速验证并迭代","能否建立长期影响力"]},
+            {q:"面对不确定性和风险，你的第一反应是？",a:["寻求稳定，谨慎评估","快速行动，边做边学","寻找资源和支持","相信自己的直觉"]},
+            {q:"在团队中，你通常扮演什么角色？",a:["协调者，促进合作","创新者，提出新想法","执行者，推动落地","领导者，指明方向"]},
+            {q:"当遇到挫折时，你会？",a:["反思原因，调整策略","寻求他人建议","暂时休息，恢复能量","换个角度重新尝试"]},
+            {q:"你如何看待竞争？",a:["竞争激发潜力","专注做好自己","寻找差异化优势","合作共赢更重要"]},
+            {q:"做决策时，你更依赖？",a:["数据和逻辑分析","直觉和内心感受","团队讨论和共识","过往经验和案例"]},
+            {q:"你理想的工作状态是？",a:["有明确的目标和计划","有创造和探索的空间","有稳定的收入和保障","有社会价值和意义感"]},
+            {q:"当客户或用户提出需求时，你会？",a:["深入了解真实痛点","快速给出解决方案","评估可行性和成本","引导他们发现真正需要"]},
+            {q:"你认为OPC成功的关键是什么？",a:["专业技能和知识","人脉和资源网络","执行力和毅力","创新和差异化"]},
+            {q:"面对变化，你的态度是？",a:["拥抱变化，寻找机会","谨慎观察，再行动","主动创造变化","保持稳定，减少风险"]},
+            {q:"你如何定义成功？",a:["实现个人价值和梦想","获得财富和地位","帮助他人成长","创造社会影响力"]},
+            {q:"在压力下，你通常会？",a:["制定详细计划应对","寻求支持和倾诉","专注当下，一步步来","转换视角，寻找机会"]},
+            {q:"你更喜欢的工作方式是？",a:["独立工作，自主安排","团队协作，互相支持","灵活多变，随机应变","结构化，按部就班"]},
+            {q:"当项目进展不顺时，你会？",a:["复盘总结，调整方向","寻求外部帮助","坚持原计划，相信过程","创新方法，突破瓶颈"]},
+            {q:"你如何看待失败？",a:["学习成长的机会","需要避免的风险","重新开始的信号","检验假设的方式"]},
+            {q:"在OPC创业中，你最看重？",a:["时间自由和地点灵活","收入潜力和增长空间","专业能力的发挥","创造有意义的产品"]},
+            {q:"你如何处理多重任务？",a:["优先级排序，逐一完成","并行处理，提高效率","委托他人，专注核心","根据心情和状态调整"]},
+            {q:"面对批评和反馈，你会？",a:["虚心接受，改进提升","分析合理性，选择性采纳","坚持己见，相信自己","寻求更多人的意见"]},
+            {q:"你的能量来源是？",a:["独处和内省","与他人交流","学习和探索","行动和创造"]},
+            {q:"在OPC发展中，你最大的担忧是？",a:["收入不稳定","缺乏方向和目标","孤独和缺乏支持","能力不足以应对挑战"]},
+            {q:"你如何看待规则和约束？",a:["必要的框架和保障","可以灵活调整","需要时遵守","打破创新"]},
+            {q:"当有机会学习新技能时，你会？",a:["评估对目标的贡献","感兴趣就立即开始","制定系统学习计划","寻找实践机会"]},
+            {q:"你认为OPC最需要培养的能力是？",a:["自我管理能力","商业思维能力","人际连接能力","创新创造能力"]},
+            {q:"回顾过去，你最自豪的是？",a:["坚持完成了困难的事","帮助了他人成长","创造了独特的价值","突破了自己的局限"]}
+        ];
+
+        // 原型数据
+        var archetypes = {
+            innocent:{name:"天真者",desc:"你相信世界是美好的，追求简单纯粹。在OPC之路上，你以乐观和信任感染他人，创造温暖的品牌调性。"},
+            orphan:{name:"孤儿",desc:"你经历过挑战，更懂得珍惜和务实。在OPC之路上，你的韧性和同理心让你能深度连接客户。"},
+            hero:{name:"英雄",desc:"你勇于接受挑战，不断超越自我。在OPC之路上，你的行动力和决心帮助你突破重重障碍。"},
+            caregiver:{name:"照顾者",desc:"你天生乐于助人，关注他人需求。在OPC之路上，你的服务意识让你成为客户信赖的伙伴。"},
+            explorer:{name:"探险家",desc:"你渴望自由和探索，不愿被束缚。在OPC之路上，你的好奇心带你发现独特的市场机会。"},
+            rebel:{name:"叛逆者",desc:"你敢于打破常规，挑战现状。在OPC之路上，你的创新精神让你创造颠覆性的解决方案。"},
+            lover:{name:"情人",desc:"你追求美好和连接，重视关系。在OPC之路上，你的魅力和审美让你打造有温度的品牌。"},
+            creator:{name:"创造者",desc:"你热爱创造，追求原创和完美。在OPC之路上，你的创意能力让你产出独特的作品。"},
+            jester:{name:"弄臣",desc:"你幽默风趣，善于调节气氛。在OPC之路上，你的轻松态度让商业变得有趣且吸引人。"},
+            sage:{name:"智者",desc:"你追求真理和智慧，喜欢思考。在OPC之路上，你的洞察力帮助你做出明智决策。"},
+            magician:{name:"魔法师",desc:"你善于转化和创造可能。在OPC之路上，你的愿景力让你将梦想变为现实。"},
+            ruler:{name:"统治者",desc:"你天生具有领导力，追求秩序和成就。在OPC之路上，你的战略眼光帮助你建立稳固的事业。"}
+        };
+
+        // OPC优势分析
+        var opcStrengths = {
+            innocent:["善于建立信任关系，客户粘性强","品牌调性温暖亲切，易于传播","保持初心，在变化中不迷失方向"],
+            orphan:["务实接地气，能解决真实痛点","韧性强，能在困境中坚持","同理心强，深度理解客户需求"],
+            hero:["执行力强，能快速推进项目","敢于挑战，善于突破瓶颈","目标导向，成就驱动力强"],
+            caregiver:["服务意识强，客户满意度高","善于建立长期客户关系","口碑传播效果好，转介绍率高"],
+            explorer:["善于发现蓝海市场机会","创新思维活跃，差异化明显","适应力强，能快速调整方向"],
+            rebel:["创新能力强，产品差异化明显","敢于挑战传统，开辟新赛道","吸引志同道合的早期用户"],
+            lover:["审美能力强，品牌调性独特","善于建立情感连接","客户忠诚度高，复购率高"],
+            creator:["原创能力强，内容/产品有独特性","追求品质，产品竞争力强","持续创新能力，保持新鲜感"],
+            jester:["内容传播力强，易于 viral","降低商业严肃感，亲和力强","创意营销能力强，成本低效果好"],
+            sage:["决策质量高，少走弯路","专业形象强，建立权威感","善于知识变现，打造个人IP"],
+            magician:["愿景能力强，能吸引追随者","善于整合资源，借力发展","转型能力强，把握趋势机会"],
+            ruler:["战略规划能力强，方向清晰","组织能力好，能建立系统","品牌影响力强，易于规模化"]
+        };
+
+        // OPC发展建议
+        var opcGrowth = {
+            innocent:["增强商业敏感度，避免过于理想化","建立风险防范意识，做好预案","提升议价能力，避免被过度消耗"],
+            orphan:["建立自信，敢于展示自己的价值","主动寻求资源支持，不要独自硬扛","培养长期视野，不局限于眼前"],
+            hero:["学会授权和合作，避免单打独斗","培养耐心，接受渐进式成长","关注团队建设，而非个人英雄主义"],
+            caregiver:["设立边界，避免过度付出","提升商业化能力，将服务变现","关注自我需求，避免 burnout"],
+            explorer:["增强执行力，将想法落地","建立稳定收入来源，减少焦虑","培养专注力，避免过度分散"],
+            rebel:["学会与现有体系合作，降低阻力","建立可持续的商业模式","培养耐心，接受渐进式改变"],
+            lover:["提升理性决策能力，平衡感性与理性","建立系统的商业思维","培养独立性，不过度依赖关系"],
+            creator:["提升营销和销售能力","建立高效的工作流程","学会接受不完美，快速迭代"],
+            jester:["建立专业形象，平衡娱乐与严肃","培养深度专业能力","建立长期可持续的商业模式"],
+            sage:["增强行动力，避免过度思考","学习营销和表达，让智慧被看见","建立实践反馈机制，验证想法"],
+            magician:["增强落地执行能力","建立可复制的系统和方法","培养团队，避免个人依赖"],
+            ruler:["保持灵活性，避免过度控制","培养同理心，关注个体需求","建立开放的组织文化"]
+        };
+
+        // 题目映射到原型
+        var qMap = [[0,2,5,11],[1,3,0,2],[5,7,8,10],[1,9,3,7],[2,5,10,4],[10,3,4,9],[4,7,1,6],[3,10,8,5],[10,4,2,7],[2,5,9,1],[6,2,3,10],[1,3,0,5],[0,3,5,9],[9,3,2,7],[1,9,2,10],[4,2,0,6],[9,5,3,0],[3,9,0,4],[0,3,7,8],[1,4,3,2],[9,5,3,7],[10,7,9,8],[9,10,4,7],[2,3,7,10]];
+
+        var archNames = ["innocent","orphan","hero","caregiver","explorer","rebel","lover","creator","jester","sage","magician","ruler"];
+        var archLabels = ["天真者","孤儿","英雄","照顾者","探险家","叛逆者","情人","创造者","弄臣","智者","魔法师","统治者"];
+        
+        var currentQ = 0;
+        var scores = {};
+        var userName = "";
+
+        function startQuiz(){
+            userName = document.getElementById("userName").value.trim();
+            if(!userName){
+                alert("请输入你的名字");
+                return;
+            }
+            document.getElementById("welcomePage").className = "hidden";
+            document.getElementById("quizPage").className = "";
+            showQuestion();
+        }
+
+        function showQuestion(){
+            document.getElementById("progressFill").style.width = ((currentQ + 1) / 24 * 100) + "%";
+            document.getElementById("questionText").textContent = "第" + (currentQ + 1) + "/24题：" + questions[currentQ].q;
+            var box = document.getElementById("optionsBox");
+            box.innerHTML = "";
+            for(var i = 0; i < 4; i++){
+                var btn = document.createElement("div");
+                btn.className = "option";
+                var letter = ["A","B","C","D"][i];
+                btn.innerHTML = '<span class="option-letter">' + letter + '</span><span>' + questions[currentQ].a[i] + '</span>';
+                btn.onclick = (function(idx){
+                    return function(){
+                        selectOption(idx);
+                    };
+                })(i);
+                box.appendChild(btn);
+            }
+        }
+
+        function selectOption(idx){
+            var archId = qMap[currentQ][idx];
+            var archName = archNames[archId];
+            scores[archName] = (scores[archName] || 0) + 1;
+            currentQ++;
+            if(currentQ < 24){
+                showQuestion();
+            }else{
+                showResult();
+            }
+        }
+
+        function showResult(){
+            document.getElementById("quizPage").className = "hidden";
+            document.getElementById("resultPage").className = "";
+            
+            // 找出主导原型
+            var maxScore = 0;
+            var resultArch = "";
+            for(var key in scores){
+                if(scores[key] > maxScore){
+                    maxScore = scores[key];
+                    resultArch = key;
+                }
+            }
+            
+            // 显示主导原型
+            var arch = archetypes[resultArch];
+            document.getElementById("resultName").textContent = userName + "，你的主导原型是：" + arch.name;
+            document.getElementById("resultDesc").textContent = arch.desc;
+            
+            // 准备雷达图数据
+            var radarData = [];
+            for(var i = 0; i < 12; i++){
+                radarData.push(scores[archNames[i]] || 0);
+            }
+            
+            // 绘制雷达图
+            var ctx = document.getElementById("radarChart").getContext("2d");
+            new Chart(ctx, {
+                type: "radar",
+                data: {
+                    labels: archLabels,
+                    datasets: [{
+                        label: "原型能量分布",
+                        data: radarData,
+                        backgroundColor: "rgba(102,126,234,0.2)",
+                        borderColor: "rgba(102,126,234,1)",
+                        borderWidth: 2,
+                        pointBackgroundColor: "rgba(102,126,234,1)",
+                        pointBorderColor: "#fff",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(102,126,234,1)"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 6,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // 显示OPC优势
+            var strengthList = document.getElementById("strengthList");
+            strengthList.innerHTML = "";
+            var strengths = opcStrengths[resultArch];
+            for(var i = 0; i < strengths.length; i++){
+                var li = document.createElement("li");
+                li.textContent = strengths[i];
+                strengthList.appendChild(li);
+            }
+            
+            // 显示发展建议
+            var growthList = document.getElementById("growthList");
+            growthList.innerHTML = "";
+            var growths = opcGrowth[resultArch];
+            for(var i = 0; i < growths.length; i++){
+                var li = document.createElement("li");
+                li.textContent = growths[i];
+                growthList.appendChild(li);
+            }
+        }
+    </script>
+</body>
+</html>
