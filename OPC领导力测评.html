@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<!-- saved from url=(0074)file:///C:/Users/YoGa/Desktop/OPC%E5%8E%9F%E5%9E%8B%E6%B5%8B%E8%AF%84.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPC领导力测评 - 晶智方略</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"Microsoft YaHei",sans-serif;background:#fff;color:#333;min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:20px;min-height:100vh;display:flex;flex-direction:column}
+#cover{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.logo{position:absolute;top:20px;left:20px;height:36px}
+.title{font-size:2.2rem;font-weight:800;margin:20px 0 10px;background:linear-gradient(135deg,#6C5CE7,#A855F7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{font-size:1rem;color:#888;margin-bottom:40px;text-align:center;line-height:1.6}
+.name-input{width:100%;max-width:300px;padding:14px 18px;font-size:1.1rem;border:2px solid #e0e0e0;border-radius:12px;outline:none;transition:border .3s;box-sizing:border-box}
+.name-input:focus{border-color:#6C5CE7}
+.btn{margin-top:30px;padding:16px 48px;font-size:1.1rem;font-weight:700;color:#fff;border:none;border-radius:50px;background:linear-gradient(135deg,#6C5CE7,#A855F7);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:scale(1.04);box-shadow:0 8px 25px rgba(108,92,231,.35)}
+.hint{margin-top:16px;font-size:.85rem;color:#aaa}
+#quiz{display:none;flex:1;flex-direction:column}
+.progress-bar{width:100%;height:6px;background:#eee;border-radius:3px;margin-bottom:20px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#6C5CE7,#A855F7);border-radius:3px;transition:width .4s}
+.question-num{font-size:.9rem;color:#6C5CE7;font-weight:700;margin-bottom:8px}
+.question-text{font-size:1.15rem;font-weight:600;line-height:1.7;margin-bottom:24px;min-height:60px}
+.options{display:flex;flex-direction:column;gap:12px;flex:1}
+.option-btn{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:#f8f8f8;border:2px solid transparent;border-radius:14px;cursor:pointer;transition:all .25s;font-size:1rem;line-height:1.5;text-align:left}
+.option-btn:hover{background:#f0edff;border-color:#d4c8ff}
+.option-btn.selected{background:#f0edff;border-color:#6C5CE7;font-weight:600}
+.option-letter{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#eee;font-weight:700;font-size:.9rem;flex-shrink:0;transition:all .25s;margin-top:2px}
+.option-btn.selected .option-letter{background:#6C5CE7;color:#fff}
+#report{display:none;flex:1;overflow-y:auto;padding-bottom:40px}
+.report-header{text-align:center;padding:30px 0}
+.report-name{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.report-title{font-size:1.1rem;color:#6C5CE7;font-weight:600;margin-bottom:4px}
+.report-subtitle{font-size:.9rem;color:#999}
+.chart-box{width:300px;height:300px;margin:20px auto}
+.section{background:#f8f8fa;border-radius:16px;padding:20px;margin-bottom:20px}
+.section h3{font-size:1.05rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.archetype-card{display:flex;align-items:flex-start;gap:14px;padding:14px;background:#fff;border-radius:12px;margin-bottom:10px}
+.archetype-card:last-child{margin-bottom:0}
+.archetype-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.archetype-info h4{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.archetype-info p{font-size:.82rem;color:#666;line-height:1.5}
+.tip-box{background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:.9rem;line-height:1.7;position:relative;padding-left:42px}
+.tip-box::before{content:attr(data-num);position:absolute;left:14px;top:14px;width:22px;height:22px;background:#6C5CE7;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+.cta-box{background:linear-gradient(135deg,#6C5CE7,#A855F7);border-radius:16px;padding:28px 20px;text-align:center;color:#fff;margin-top:10px}
+.cta-box h3{font-size:1.1rem;margin-bottom:10px}
+.cta-box p{font-size:.9rem;opacity:.9;line-height:1.6;margin-bottom:16px}
+.cta-box a{display:inline-block;padding:12px 32px;background:#fff;color:#6C5CE7;font-weight:700;border-radius:50px;text-decoration:none;font-size:.95rem}
+#done{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px}
+#done .icon{font-size:4rem;margin-bottom:20px}
+#done h2{font-size:1.5rem;margin-bottom:12px}
+#done p{color:#888;line-height:1.7;margin-bottom:24px}
+#done .btn-sm{padding:12px 32px;font-size:1rem;font-weight:700;color:#fff;border:none;border-radius:50px;background:linear-gradient(135deg,#6C5CE7,#A855F7);cursor:pointer;text-decoration:none;display:inline-block}
+@media(max-width:400px){.title{font-size:1.8rem}}
+</style>
+</head>
+<body>
+
+<section id="cover" class="container">
+  <svg class="logo" viewBox="0 0 120 36" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="26" font-family="-apple-system,&#39;Microsoft YaHei&#39;,sans-serif" font-size="20" font-weight="800" fill="#6C5CE7">晶智方略</text>
+  </svg>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px">
+    <h1 class="title">OPC领导力测评</h1>
+    <p class="subtitle">解锁12原型能量<br>发现你的OPC领导力密码</p>
+    <input class="name-input" id="userName" type="text" placeholder="请输入你的名字" maxlength="20">
+    <button class="btn" id="startBtn">开始测评</button>
+    <p class="hint">共24题 · 约5分钟</p>
+  </div>
+</section>
+
+<section id="quiz" class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="question-num" id="questionNum"></div>
+  <div class="question-text" id="questionText"></div>
+  <div class="options" id="optionsBox"></div>
+</section>
+
+<section id="report" class="container">
+  <div class="report-header">
+    <div class="report-name" id="rName"></div>
+    <div class="report-title">你的OPC领导力原型报告</div>
+    <div class="report-subtitle">基于荣格原型理论 × 一人公司(OPC)场景</div>
+  </div>
+  <div class="chart-box"><svg id="radarSvg" viewBox="-165 -155 330 310" style="width:100%;max-width:300px"></svg></div>
+  <div class="section" id="dominantSection"></div>
+  <div class="section" id="shadowSection"></div>
+  <div class="section" id="advantageSection"></div>
+  <div class="section" id="potentialSection"></div>
+  <div class="section" id="tipSection"></div>
+  <div class="cta-box">
+    <h3>想系统激活你的原型战队？</h3>
+    <p>《人生转型加速器》帮你更敏捷高效地进化为真正的原型CEO</p>
+    <a href="file:///C:/Users/YoGa/Desktop/OPC%E5%8E%9F%E5%9E%8B%E6%B5%8B%E8%AF%84.html#">咨询课程详情</a>
+  </div>
+</section>
+
+<section id="done" class="container">
+  <div class="icon">🔒</div>
+  <h2>你已完成测评</h2>
+  <p>每位用户只能完成一次测评<br>点击下方按钮查看你的报告</p>
+  <a class="btn-sm" href="file:///C:/Users/YoGa/Desktop/OPC%E5%8E%9F%E5%9E%8B%E6%B5%8B%E8%AF%84.html#" id="viewReportBtn">查看我的报告</a>
+</section>
+
+<script>
+const archetypes=[
+  {id:'hero',name:'英雄',color:'#FF6B6B',desc:'以勇气征服挑战，矢志拯救他人或成就伟业'},
+  {id:'ruler',name:'统治者',color:'#4D4D4D',desc:'以建立秩序与权威，肩负掌控全局的责任'},
+  {id:'rebel',name:'叛逆者',color:'#845EC2',desc:'以打破常规与变革，用反叛催生新秩序'},
+  {id:'innocent',name:'天真者',color:'#FFD93D',desc:'以乐观、信任、单纯，追求自由快乐的生活本质'},
+  {id:'orphan',name:'孤儿',color:'#6BCB77',desc:'以体验孤独与自立，在逆境中锻造生存力量'},
+  {id:'sage',name:'智者',color:'#00BBF9',desc:'以追求真理智慧，用理性之光穿透表象迷雾'},
+  {id:'magician',name:'魔法师',color:'#C4FAF8',desc:'以智慧转化现实困境，借由创新解法点石成金'},
+  {id:'creator',name:'创造者',color:'#FF9671',desc:'以发明与艺术表达，用想象力构建新世界'},
+  {id:'explorer',name:'探险家',color:'#00C9A7',desc:'以探索未知领域，不断追寻自由与新发现'},
+  {id:'jester',name:'弄臣',color:'#B39CD0',desc:'以幽默化解困境，用欢笑重构生活挑战'},
+  {id:'caregiver',name:'照顾者',color:'#FFC75F',desc:'以关怀、保护、责任，践行守护他人的使命'},
+  {id:'lover',name:'情人',color:'#F9C6C6',desc:'以缔结深度情感纽带，在关系中实现心灵共鸣'}
+];
+const qMap=[
+  ['sage','creator','caregiver','ruler'],
+  ['lover','sage','jester','rebel'],
+  ['explorer','innocent','orphan','magician'],
+  ['rebel','magician','caregiver','hero'],
+  ['creator','caregiver','lover','hero'],
+  ['hero','magician','explorer','orphan'],
+  ['lover','jester','sage','ruler'],
+  ['rebel','orphan','explorer','ruler'],
+  ['ruler','rebel','lover','sage'],
+  ['caregiver','innocent','jester','hero'],
+  ['sage','lover','caregiver','explorer'],
+  ['ruler','jester','sage','magician'],
+  ['hero','orphan','innocent','ruler'],
+  ['explorer','creator','sage','jester'],
+  ['ruler','magician','explorer','orphan'],
+  ['caregiver','lover','hero','orphan'],
+  ['hero','explorer','orphan','creator'],
+  ['sage','jester','hero','innocent'],
+  ['hero','orphan','explorer','creator'],
+  ['innocent','explorer','rebel','lover'],
+  ['ruler','caregiver','magician','hero'],
+  ['rebel','magician','caregiver','explorer'],
+  ['innocent','jester','creator','lover'],
+  ['orphan','creator','explorer','innocent']
+];
+const qs=[
+  "刚开始做"一人公司"，你会怎么选第一个产品？",
+  "做品牌时，你最想传递什么？",
+  "面对一个没人做过的新机会，你怎么想？",
+  "给你的品牌起名，你更看重什么？",
+  "做产品时，哪个环节最让你爽？",
+  "产品遇到很难解决的技术问题，你会怎么做？",
+  "收集用户反馈时，你最在意哪种？",
+  "大家都在追某个潮流，你会怎么做？",
+  "做营销时，你更喜欢哪种方式？",
+  "客户抱怨甚至骂你，你的第一反应是？",
+  "你理想中的客户关系是什么样的？",
+  "要做一场重要的公开演讲或路演，你会怎么准备？",
+  "业务突然遭遇重大挫折，你的第一反应是？",
+  "工作卡住了、没灵感，你会怎么办？",
+  "管理"一人公司"的财务，你更倾向于？",
+  "因为工作不得不牺牲陪伴家人/伴侣的时间，你会怎么想？",
+  "回顾创业路，最让你有成就感的是？",
+  "你怎么看"犯错"这件事？",
+  "感到孤独无助时，你会怎么获得力量？",
+  "对于未来，你最大的渴望是什么？",
+  "你认为"一人公司"成功的基石是什么？",
+  "如果事业获得巨大成功，你最想做的是什么？",
+  "你怎么定义"快乐"？",
+  "在你看来，OPC路上最深刻的"现实"是什么？"
+];
+const opts=[
+  ["先查数据、看报告，找最稳妥的切入点。","选一个自己超级喜欢、一想起来就兴奋的点子。","先帮一小群人解决他们最头疼的问题。","找一个自己能说了算、别人很难模仿的小众领域。"],
+  ["让客户觉得"懂我"，和我有情感共鸣。","让客户觉得"这人真专业，听他的没错"。","让客户觉得"这人挺逗，很亲切"。","打破常规，告诉别人"凭什么要跟别人一样"。"],
+  ["太刺激了！我要去探个究竟。","乐观一点，跟着感觉走，结果不会差。","冷静算算账，只干最实际的事。","我能把这片混乱变成有秩序的新东西。"],
+  ["名字要有个性，最好带点反叛的意思。","名字要让人产生想象，感觉有魔力。","名字要温暖、安全，像回家一样。","名字要霸气，一听就有征服市场的野心。"],
+  ["把脑子里一个模糊的想法，变成一件好看又好用的东西。","看到自己的产品真的帮到了别人。","研究用户的情感，让产品成为"爱的载体"。","测试产品极限，看它能不能在各种恶劣条件下扛住。"],
+  ["死磕到底，一定要征服它。","换个完全不一样的角度，看看能不能巧解。","先放一放，去旅行或尝试新事物，等灵感自己来。","坦然承认这个难题，找个成本更低的替代方案。"],
+  ["那些充满感情的描述，能让我感同身受。","那些幽默的吐槽，能让我笑出来。","那些指出逻辑问题、数据偏差的理性反馈。","视为对我的体系与权威的挑战，必须通过完善系统来彻底解决，不容许瑕疵。"],
+  ["警惕，甚至故意唱反调，因为真理往往在少数人手里。","一个人冷静分析，只取对自己真正有用的部分。","兴奋地冲进去，因为每一次新浪潮都是冒险。","思考如何利用这种潮流来巩固我的地位和影响力，将其纳入我的可控范围内。"],
+  ["先申请版权/专利，建立标准流程，牢牢控制局面。","当个"搅局者"，用出乎意料甚至有点挑衅的方式吸引眼球。","用温暖的故事和社群运营，让客户感觉被爱、被理解。","输出专业、有深度的内容，让客户因为你的智慧而主动靠近。"],
+  ["这是我的责任，马上行动，安抚补偿，让他们满意。","保持乐观，觉得只是小问题，大多数人还是认可我的。","从中找有趣的段子，甚至拿来调侃自己。","认真复盘，当成一次提升产品的必要试炼。"],
+  ["我是权威专家，客户因为我的智慧而追随我。","我们是亲密的伙伴，互相滋养，一起成长。","我是他们的守护者，客户因为有我感到安全。","我们是探索路上的同行者，一起发现新世界。"],
+  ["精心准备，当成一次展示力量、掌控全场、奠定领袖地位的机会。","加入幽默和自嘲，轻松化解紧张，把信息传递出去。","当成一次帮助更多人理解真理的机会，真诚分享。","想象自己是在变一场改变观众认知的魔术。"],
+  ["当成史诗级挑战，咬牙正面迎战，相信自己能赢。","平静接受，这是创业常态，一个人务实找替代方案。","相信只是黎明前的黑暗，保持天真乐观，会好起来的。","重新审视流程，是不是管理不够严格导致漏洞。"],
+  ["放下工作，去陌生的地方旅行或尝试新体验。","去做点艺术、设计或任何能发挥想象力的事。","找本最硬的专业书来读，用逻辑和知识突破瓶颈。","放松甚至放纵一下，笑一笑，明天再说。"],
+  ["建立严格的记账系统，每一分钱都要控制住。","找最聪明的理财工具或投资策略，让钱非线性增长。","把钱主要花在能带来新体验和成长的地方。","量入为出，只求稳定和安全感，不追求高风险。"],
+  ["很内疚，觉得自己没尽到责任，会想办法补偿。","这是深刻联结的体现，我的努力也是为了我们共同的未来。","这是英雄必须付出的代价，我的成就会让他们骄傲。","这就是现实，接受它，然后用更高效的方式平衡。"],
+  ["征服了一个又一个看似不可能的目标，赢了竞争。","探索了没人去过的地方，画出了自己的地图。","在最难时候依然保持独立和清醒，没有随大流。","创造了一些原本不存在的美好事物。"],
+  ["错误是最好的老师，让我更接近真相。","哈哈，太有意思了！每个错误都是一个段子。","错误让我有机会展现韧性，每次跌倒后站起来都更强。","快速忘掉，继续向前，不被负面情绪拖累。"],
+  ["相信这是成为英雄必须经历的试炼。","接受孤独，把它当成现实，磨炼自己独立生存的能力。","想象远方有更大世界等着我去探索，这让我重新振作。","通过创作或表达，把孤独感变成一件作品。"],
+  ["回归简单的快乐，生活在自由的、没有复杂规则和人际纷扰的环境里。","不断出发，去发现世界和自己的更多可能。","改变一些不合理的规则，让世界因为我的存在而不同。","深深地爱与被爱，和重要的人建立持久的情感联结。"],
+  ["建立稳定、可控、高效运转的商业体系。","对客户、对社会、对自己都有一份深切的关怀与责任。","永不枯竭的创新能力和点石成金的巧思。","直面困难的勇气和从不放弃的韧性。"],
+  ["用影响力去挑战和改变不合理的行业规则。","创造一个平台，用自己的独特方法论去"点化"赋能他人，让他们实现脱胎换骨的转变。","建立一个稳固的家族或社群，守护所爱的人。","继续出发，去探索下一个未知领域。"],
+  ["发自内心的、简单的喜悦，对生活充满信任。","在严肃的生活中找到幽默和笑声，轻松解构难题。","看到自己精心打磨的作品被喜欢、被认可。","与别人心意相通，被理解也理解别人的瞬间。"],
+  ["每个人在某种程度上都是孤独的，必须学会靠自己。","创造和表达是人类最本质的需求，世界因想象而存在。","唯一不变的是变化，所以要永远保持好奇和适应力。","真诚和信任是最稀缺的资源，也是最值得追求的东西。"]
+];
+var currentQ=0,scores={},userName='';
+
+function startQuiz(){
+  userName=document.getElementById('userName').value.trim();
+  if(!userName){alert('请输入你的名字');return;}
+  archetypes.forEach(function(a){scores[a.id]=0;});
+  currentQ=0;
+  document.getElementById('cover').style.display='none';
+  document.getElementById('quiz').style.display='flex';
+  showQuestion();
+}
+
+function showQuestion(){
+  document.getElementById('progressFill').style.width=(currentQ/24*100)+'%';
+  document.getElementById('questionNum').textContent='第 '+(currentQ+1)+'/24 题';
+  document.getElementById('questionText').textContent=qs[currentQ];
+  var box=document.getElementById('optionsBox');
+  box.innerHTML='';
+  var letters=['A','B','C','D'];
+  for(var i=0;i<4;i++){
+    (function(idx){
+      var btn=document.createElement('div');
+      btn.className='option-btn';
+      btn.innerHTML='<span class="option-letter">'+letters[idx]+'</span><span>'+opts[currentQ][idx]+'</span>';
+      btn.onclick=function(ev){selectOption(idx,ev);};
+      box.appendChild(btn);
+    })(i);
+  }
+}
+
+function selectOption(i,ev){
+  /* 先清除所有选中态 */
+  var siblings=document.getElementById('optionsBox').querySelectorAll('.option-btn');
+  for(var j=0;j<siblings.length;j++){siblings[j].classList.remove('selected');}
+  if(ev){ev.currentTarget.classList.add('selected');}else{
+    var btns=document.getElementById('optionsBox').querySelectorAll('.option-btn');
+    if(btns[i])btns[i].classList.add('selected');
+  }
+  var archId=qMap[currentQ][i];
+  scores[archId]=(scores[archId]||0)+1;
+  setTimeout(function(){
+    currentQ++;
+    if(currentQ<24) showQuestion();
+    else finishQuiz();
+  },350);
+}
+
+function finishQuiz(){
+  document.getElementById('quiz').style.display='none';
+  localStorage.setItem('crystalmind_opc_done','1');
+  var sorted=archetypes.slice().sort(function(a,b){return scores[b.id]-scores[a.id];});
+  var data={
+    name:userName,
+    scores:scores,
+    dominant:sorted[0],
+    shadow:sorted[11],
+    top3:sorted.slice(0,3),
+    bottom3:sorted.slice(9)
+  };
+  localStorage.setItem('crystalmind_opc_report',JSON.stringify(data));
+  showReport(data);
+}
+
+function showReport(data){
+  document.getElementById('report').style.display='block';
+  document.getElementById('rName').textContent=data.name+'，这是你的领导力原型报告';
+  document.getElementById('dominantSection').innerHTML=
+    '<h3>🏆 你的主导原型</h3><div class="archetype-card">'+
+    '<div class="archetype-icon" style="background:'+data.dominant.color+'20;color:'+data.dominant.color+'">'+data.dominant.name[0]+'</div>'+
+    '<div class="archetype-info"><h4>'+data.dominant.name+'</h4><p>'+data.dominant.desc+'</p></div></div>';
+  document.getElementById('shadowSection').innerHTML=
+    '<h3>🔮 你的阴影原型</h3><div class="archetype-card">'+
+    '<div class="archetype-icon" style="background:'+data.shadow.color+'20;color:'+data.shadow.color+'">'+data.shadow.name[0]+'</div>'+
+    '<div class="archetype-info"><h4>'+data.shadow.name+'</h4><p>这是你较低能量的原型，意识到它可以帮你整合内在对立面，实现更完整的自我。</p></div></div>';
+  var t3='<h3>💪 TOP3 核心优势</h3>';
+  data.top3.forEach(function(a,i){t3+='<div class="archetype-card"><div class="archetype-icon" style="background:'+a.color+'20;color:'+a.color+'">'+(i+1)+'</div><div class="archetype-info"><h4>'+a.name+'</h4><p>'+a.desc+'</p></div></div>';});
+  document.getElementById('advantageSection').innerHTML=t3;
+  var p3='<h3>🔋 待激活潜能</h3>';
+  data.bottom3.forEach(function(a){p3+='<div class="archetype-card"><div class="archetype-icon" style="background:'+a.color+'20;color:'+a.color+'">激活</div><div class="archetype-info"><h4>'+a.name+'</h4><p>刻意练习'+a.name+'能量，可以为你的OPC事业带来新的可能性。</p></div></div>';});
+  document.getElementById('potentialSection').innerHTML=p3;
+  var areas=['战略规划','客户关系','团队领导','创新突破'];
+  var tips=['作为'+data.dominant.name+'，你在OPC创业中的核心优势是'+data.dominant.desc+'，请持续放大这一优势。','有意识地激活你的'+data.bottom3[0].name+'能量，可以帮助你在'+areas[Math.floor(Math.random()*areas.length)]+'方面获得突破。','OPC创业不是孤军奋战，找到和你互补的同行者，让你的'+data.top3.map(function(a){return a.name;}).join('+')+'优势得到最大发挥。','定期做原型能量自查：哪几个原型在今天的工作中「在线」？哪几个在「休眠」？有意识地调用需要激活的原型能量。','《人生转型加速器》可以帮助你更系统地整合12原型能量，从超级个体进化为真正的原型CEO。'];
+  var th='<h3>🎯 OPC发展建议</h3>';
+  tips.forEach(function(t,i){th+='<div class="tip-box" data-num="'+(i+1)+'">'+t+'</div>';});
+  document.getElementById('tipSection').innerHTML=th;
+  drawRadar(data);
+}
+
+function drawRadar(data){
+  var svg=document.getElementById('radarSvg');
+  svg.innerHTML='';
+  var n=12,cx=0,cy=0,r=120;
+  function toRad(d){return d*Math.PI/180;}
+  function getPt(i,val){
+    var a=toRad(90+i*360/n);
+    var vr=(val/8)*r;
+    return{x:cx+vr*Math.cos(a),y:cy-vr*Math.sin(a)};
+  }
+  for(var lvl=1;lvl<=4;lvl++){
+    var lr=(lvl/4)*r;
+    var pts=[];
+    for(var i=0;i<n;i++){
+      var a=toRad(90+i*360/n);
+      pts.push((cx+lr*Math.cos(a))+','+(cy-lr*Math.sin(a)));
+    }
+    var poly=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+    poly.setAttribute('points',pts.join(' '));
+    poly.setAttribute('fill',lvl===4?'rgba(108,92,231,0.05)':'none');
+    poly.setAttribute('stroke','rgba(0,0,0,0.08)');
+    poly.setAttribute('stroke-width','1');
+    svg.appendChild(poly);
+  }
+  for(var i=0;i<n;i++){
+    var a=toRad(90+i*360/n);
+    var ex=cx+r*Math.cos(a),ey=cy-r*Math.sin(a);
+    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',cx);line.setAttribute('y1',cy);line.setAttribute('x2',ex);line.setAttribute('y2',ey);
+    line.setAttribute('stroke','rgba(0,0,0,0.08)');
+    line.setAttribute('stroke-width','1');
+    svg.appendChild(line);
+    var lp=getPt(i,8.5);
+    var txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x',lp.x);txt.setAttribute('y',lp.y+4);
+    txt.setAttribute('text-anchor','middle');txt.setAttribute('font-size','11');
+    txt.setAttribute('fill','#555');
+    txt.textContent=archetypes[i].name;
+    svg.appendChild(txt);
+  }
+  var vals=archetypes.map(function(a){return data.scores[a.id]||0;});
+  var dPts=[];
+  for(i=0;i<n;i++){var p=getPt(i,vals[i]);dPts.push(p.x+','+p.y);}
+  var dp=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  dp.setAttribute('points',dPts.join(' '));
+  dp.setAttribute('fill','rgba(108,92,231,0.2)');
+  dp.setAttribute('stroke','rgba(108,92,231,0.8)');
+  dp.setAttribute('stroke-width','2');
+  svg.appendChild(dp);
+  for(i=0;i<n;i++){
+    var p=getPt(i,vals[i]);
+    var dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('cx',p.x);dot.setAttribute('cy',p.y);dot.setAttribute('r','4');
+    dot.setAttribute('fill',archetypes[i].color);
+    dot.setAttribute('stroke','#fff');dot.setAttribute('stroke-width','2');
+    svg.appendChild(dot);
+  }
+}
+
+function showReportFromStorage(){
+  var raw=localStorage.getItem('crystalmind_opc_report');
+  if(!raw){alert('未找到报告数据');return;}
+  document.getElementById('cover').style.display='none';
+  document.getElementById('done').style.display='none';
+  showReport(JSON.parse(raw));
+}
+
+/* 初始化绑定 */
+window.onload=function(){
+  document.getElementById('startBtn').onclick=startQuiz;
+  document.getElementById('userName').onkeydown=function(e){if(e.key==='Enter')startQuiz();};
+  document.getElementById('viewReportBtn').onclick=function(e){e.preventDefault();showReportFromStorage();};
+  if(localStorage.getItem('crystalmind_opc_done')){
+    document.getElementById('cover').style.display='none';
+    document.getElementById('done').style.display='flex';
+  }
+};
+</script>
+
+
+</body></html>
